@@ -7,7 +7,7 @@ from waitress import serve
 app = Flask(__name__)
 
 
-@app.route('shadow-3d-operation/version')
+@app.route('/shadow-3d-operation/version')
 def appversion():
     return {
         'version': '1.0.0.0',
