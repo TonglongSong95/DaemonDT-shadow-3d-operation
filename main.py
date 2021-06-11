@@ -1,15 +1,18 @@
-import flask
-from flask import Flask, redirect, request, url_for, Response, jsonify
+from flask import Flask, request, jsonify
 import mymeshIO as m
 import shadow_calc
 import json
+from waitress import serve
 
 app = Flask(__name__)
 
 
 @app.route('shadow-3d-operation/version')
 def appversion():
-    return 'version: 1.0.0.0'
+    return {
+        'version': '1.0.0.0',
+        'last update': '11/6/2021'
+    }
 
 
 @app.route('/shadow-3d-operation/bec/devplan/<uuid>/envelope/<env_uuid>/shadowunion', methods=['POST'])
@@ -45,3 +48,4 @@ def return_true_shadow(uuid, env_uuid):
 
 if __name__ == '__main__':
     app.run()
+    serve(app, port=9000, url_scheme='https')
