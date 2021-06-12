@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import mymeshIO as m
 import shadow_calc
-import json
 from waitress import serve
 
 app = Flask(__name__)
@@ -19,8 +18,7 @@ def appversion():
 def return_true_shadow(uuid, env_uuid):
     if request.method == 'POST':
         try:
-            data = request.form['json']
-            data = json.loads(data)
+            data = request.get_json(force=True)
             true_shadow = shadow_calc.true_shadow_geom(data['data'])
             output = {
                 'code': 200,
