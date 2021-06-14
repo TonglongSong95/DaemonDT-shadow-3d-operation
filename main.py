@@ -17,39 +17,32 @@ def appversion():
 
 @app.route('/shadow-3d-operation/bec/devplan/<uuid>/envelope/<env_uuid>/shadowunion', methods=['POST'])
 def return_true_shadow(uuid, env_uuid):
-    try:
-        if request.method == 'POST':
-            try:
-                data = request.get_json(force=True)
-                true_shadow = shadow_calc.true_shadow_geom(data)
-                output = {
-                    'code': 200,
-                    'data': {
-                        "envTrueSV": m.write_mesh(true_shadow),
-                        "envTrueSVVolume": m.transform_mesh_to_pcs(true_shadow).volume
-                    },
-                    'status': 'success'
-                }
-                output = jsonify(output)
-                output.headers['token'] = data['token']
-                return output
-            except Exception as e:
-                return {
-                    'code': 500,
-                    'status': f"error: {e}"
-                }
-
-        else:
+    if request.method == 'POST':
+        try:
+            data = request.get_json(force=True)
+            true_shadow = shadow_calc.true_shadow_geom(data)
+            output = {
+                'code': 200,
+                'data': {
+                    "envTrueSV": m.write_mesh(true_shadow),
+                    "envTrueSVVolume": m.transform_mesh_to_pcs(true_shadow).volume
+                },
+                'status': 'success'
+            }
+            output = jsonify(output)
+            output.headers['token'] = data['token']
+            return output
+        except Exception as e:
             return {
                 'code': 500,
-                'status': 'Non POST request received'
+                'status': f"error: {e}"
             }
-    except Exception as e:
+
+    else:
         return {
             'code': 400,
-            'status': f"error: {e}"
+            'status': 'fail : Non POST request received'
         }
-
 
 
 if __name__ == '__main__':
