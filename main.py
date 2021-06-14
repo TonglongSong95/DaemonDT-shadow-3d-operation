@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import mymeshIO as m
 import shadow_calc
 from waitress import serve
+import json
 
 app = Flask(__name__)
 
@@ -30,7 +31,7 @@ def return_true_shadow(uuid, env_uuid):
                     'status': 'success'
                 }
                 output = jsonify(output)
-                output.headers['token'] = data['data']['token']
+                output.headers['token'] = data['token']
                 return output
             except Exception as e:
                 return {
